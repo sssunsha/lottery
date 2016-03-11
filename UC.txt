@@ -1,0 +1,7 @@
+User Case:
+1. support to check the last 50 round of DLT lottery result
+2. can manage the potential lottery number
+
+
+
+3. can suggest the best number to me
