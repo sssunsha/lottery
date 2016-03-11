@@ -2,7 +2,8 @@ TEMPLATE = app
 
 QT += qml quick widgets
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    dltwinballmanager.cpp
 
 RESOURCES += qml.qrc
 
@@ -14,4 +15,8 @@ include(deployment.pri)
 
 DISTFILES += \
     UC.txt
+
+HEADERS += \
+    constant.h \
+    dltwinballmanager.h
 
