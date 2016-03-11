@@ -22,7 +22,7 @@ void DLTWINBallManager::loadSuggestBallData()
 
 }
 
-void DLTWINBallManager::check4FetchWinBallDataFromWeb()
+bool DLTWINBallManager::check4FetchWinBallDataFromWeb()
 {
 
 }

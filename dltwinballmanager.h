@@ -3,7 +3,13 @@
 
 #include "constant.h"
 #include "networkmanager.h"
+#include <QString>
 // DLT win ball manager
+
+const QString WINBALLFILEPATH = "./winball";
+const QString SUGGESTBALLFILEPATH = "./sugge";
+
+
 
 #include <QObject>
 
@@ -15,12 +21,10 @@ public:
     bool init();
     void loadLocalWinBallData();
     void loadSuggestBallData();
-    void check4FetchWinBallDataFromWeb();
-
+    bool check4FetchWinBallDataFromWeb();
 
 private:
     NetworkManager* m_nwm;
-
 };
 
 #endif // DLTWINBALLMANAGER_H
