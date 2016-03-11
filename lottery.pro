@@ -3,7 +3,8 @@ TEMPLATE = app
 QT += qml quick widgets
 
 SOURCES += main.cpp \
-    dltwinballmanager.cpp
+    dltwinballmanager.cpp \
+    networkmanager.cpp
 
 RESOURCES += qml.qrc
 
@@ -18,5 +19,6 @@ DISTFILES += \
 
 HEADERS += \
     constant.h \
-    dltwinballmanager.h
+    dltwinballmanager.h \
+    networkmanager.h
 

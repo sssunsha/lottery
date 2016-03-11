@@ -2,28 +2,20 @@ import QtQuick 2.3
 import QtQuick.Controls 1.2
 
 ApplicationWindow {
+    id: root
     visible: true
-    width: 640
-    height: 480
-    title: qsTr("Hello World")
+    width: 480
+    height: 640
+    title: qsTr("Lottery")
 
-    menuBar: MenuBar {
-        Menu {
-            title: qsTr("File")
-            MenuItem {
-                text: qsTr("&Open")
-                onTriggered: console.log("Open action triggered");
-            }
-            MenuItem {
-                text: qsTr("Exit")
-                onTriggered: Qt.quit();
-            }
+    // the main view of the lotter
+    Item {
+        id : mainView
+        anchors.fill: parent
+
+        HistoryWinNumberView {
+            anchors.fill: parent
         }
-    }
-
-    Label {
-        text: qsTr("Hello World")
-        anchors.centerIn: parent
     }
 }
 
