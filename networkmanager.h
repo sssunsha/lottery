@@ -14,7 +14,10 @@ class NetworkManager : public QObject
     Q_OBJECT
 public:
     NetworkManager(QObject* parent = 0);
-    void load_recent_balls(DLT_WIN_BALL* balls);
+    void load_recent_balls(/*DLT_WIN_BALL* balls*/);
+signals:
+    void fetchRecentWinBallsDataFinished();
+    void fetchRecentWinBallsDataError();
 
 private slots:
 void handleNetworkReply(QNetworkReply* reply);

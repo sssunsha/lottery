@@ -21,7 +21,10 @@ public:
     void loadSuggestBallData();
     bool check4FetchWinBallDataFromWeb();
 
-private:
+public slots:
+    void handleFetchRecentWinBallsDataFinished();
+    void handleFetchRecentWinBallsDataError();
+private:    
     NetworkManager* m_nwm;
     DLT_WIN_BALL m_recent_win_balls[RECENT_NUMBER];
 };

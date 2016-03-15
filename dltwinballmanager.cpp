@@ -9,6 +9,8 @@ DLTWINBallManager::DLTWINBallManager(QObject* parent)
 // init
 bool DLTWINBallManager::init()
 {
+    // start to fectch the recent win ball from web
+    this->m_nwm->load_recent_balls();
     return true;
 }
 
@@ -25,5 +27,15 @@ void DLTWINBallManager::loadSuggestBallData()
 bool DLTWINBallManager::check4FetchWinBallDataFromWeb()
 {
 
+}
+
+void DLTWINBallManager::handleFetchRecentWinBallsDataFinished()
+{
+    qDebug() << "fetch Recent Win ball finished";
+}
+
+void DLTWINBallManager::handleFetchRecentWinBallsDataError()
+{
+    qDebug() << "fetch Recent Win ball falied";
 }
 

@@ -1,9 +1,11 @@
 #include "networkmanager.h"
+#include "dltwinballmanager.h"
 #include <QLoggingCategory>
 
 NetworkManager::NetworkManager(QObject* parent)
     :QObject(parent)
 {
+    // init QNetworkAccessManager
     m_net_access_manager = new QNetworkAccessManager(this);
     QLoggingCategory::setFilterRules("qt.network.ssl.warning=false");
 
@@ -28,14 +30,19 @@ NetworkManager::NetworkManager(QObject* parent)
     QObject::connect(m_net_access_manager, SIGNAL(sslErrors(QNetworkReply*, const QList<QSslError>&)),
                      this, SLOT(handleSSLErrors(QNetworkReply*, const QList<QSslError>&)));
 
+    // init other signal and slots
+    connect(this, SIGNAL(fetchRecentWinBallsDataFinished()),
+            this->parent(), SLOT(handleFetchRecentWinBallsDataFinished()));
+    connect(this, SIGNAL(fetchRecentWinBallsDataError()),
+             this->parent(), SLOT(handleFetchRecentWinBallsDataError()));
+
+}
+
+void NetworkManager::load_recent_balls(/*DLT_WIN_BALL *balls*/)
+{
     // send the request to fetch for the recent win balls
     m_recent_win_balls_url = QUrl("http://f.apiplus.cn/dlt-20.json");
     QNetworkReply* reply = m_net_access_manager->get(QNetworkRequest(m_recent_win_balls_url));
-}
-
-void NetworkManager::load_recent_balls(DLT_WIN_BALL *balls)
-{
-
 }
 
 void NetworkManager::handleNetworkReply(QNetworkReply *reply)
@@ -46,10 +53,13 @@ void NetworkManager::handleNetworkReply(QNetworkReply *reply)
         QByteArray bytes = reply->readAll();
         QString string = QString::fromUtf8(bytes);
         qDebug() << string;
+        emit(fetchRecentWinBallsDataFinished());
+
     }
     else
     {
         qDebug() << "Can not get the online win balls data";
+        emit(fetchRecentWinBallsDataError());
     }
 }
 
