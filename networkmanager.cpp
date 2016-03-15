@@ -1,6 +1,10 @@
 #include "networkmanager.h"
 #include "dltwinballmanager.h"
 #include <QLoggingCategory>
+#include <QJsonParseError>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 
 NetworkManager::NetworkManager(QObject* parent)
     :QObject(parent)
@@ -34,7 +38,7 @@ NetworkManager::NetworkManager(QObject* parent)
     connect(this, SIGNAL(fetchRecentWinBallsDataFinished()),
             this->parent(), SLOT(handleFetchRecentWinBallsDataFinished()));
     connect(this, SIGNAL(fetchRecentWinBallsDataError()),
-             this->parent(), SLOT(handleFetchRecentWinBallsDataError()));
+            this->parent(), SLOT(handleFetchRecentWinBallsDataError()));
 
 }
 
@@ -51,15 +55,16 @@ void NetworkManager::handleNetworkReply(QNetworkReply *reply)
     if(statusCodeV == 200)
     {
         QByteArray bytes = reply->readAll();
-        QString string = QString::fromUtf8(bytes);
-        qDebug() << string;
+        //        QString data = QString::fromUtf8(bytes);
+        qDebug() << bytes;
+        parse2RecentWinBallsData(bytes);
         emit(fetchRecentWinBallsDataFinished());
 
     }
     else
     {
         qDebug() << "Can not get the online win balls data";
-        emit(fetchRecentWinBallsDataError());
+        emit(fetchRecentWinBallsDataError()); // download failed
     }
 }
 
@@ -91,5 +96,39 @@ void NetworkManager::handleProxyAuthenticationRequired(const QNetworkProxy &prox
 void NetworkManager::handleSSLErrors(QNetworkReply *reply, const QList<QSslError> &errors)
 {
     qDebug() << "handleSSLErrors";
+}
+
+void NetworkManager::parse2RecentWinBallsData(QByteArray byte)
+{
+    QJsonParseError json_error;
+    QJsonDocument parse_doucment = QJsonDocument::fromJson(byte, &json_error);
+    if(json_error.error == QJsonParseError::NoError)
+    {
+        if(parse_doucment.isObject())
+        {
+            QJsonObject obj = parse_doucment.object();
+            if(obj.contains("data"))
+            {
+                QJsonValue data_value = obj.take("data");
+                if(data_value.isArray())
+                {
+                    QJsonArray data_array = data_value.toArray();
+                    for(int i = 0; i < data_array.size(); i++)
+                    {
+                        QJsonObject obj = data_array.at(i).toObject();
+                        qDebug() << obj.take("expect").toString()
+                        << " " << obj.take("opencode").toString()
+                        << " "   << obj.take("opentime").toString()
+                        << " " << obj.take("opentimestamp").toInt();
+                    }
+                }
+                else
+                {
+                    emit(fetchRecentWinBallsDataError()); // parse failed
+                }
+            }
+
+        }
+    }
 }
 

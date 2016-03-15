@@ -27,7 +27,9 @@ void handleNetworkAccessibleChanged(QNetworkAccessManager::NetworkAccessibility 
 void handlePreSharedKeyAuthenticationRequired(QNetworkReply * reply, QSslPreSharedKeyAuthenticator * authenticator);
 void handleProxyAuthenticationRequired(const QNetworkProxy & proxy, QAuthenticator * authenticator);
 void handleSSLErrors(QNetworkReply * reply, const QList<QSslError> & errors);
+
 private:
+    void parse2RecentWinBallsData(QByteArray byte);
 
     QNetworkAccessManager* m_net_access_manager;
     QUrl m_recent_win_balls_url;

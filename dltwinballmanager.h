@@ -4,6 +4,7 @@
 #include "constant.h"
 #include "networkmanager.h"
 #include <QString>
+#include <QList>
 // DLT win ball manager
 
 const QString WINBALLFILE = "./winball50";
@@ -20,13 +21,14 @@ public:
     void loadLocalWinBallData();
     void loadSuggestBallData();
     bool check4FetchWinBallDataFromWeb();
+    QList<DLT_WIN_BALL>* m_recent_win_balls;
 
 public slots:
     void handleFetchRecentWinBallsDataFinished();
     void handleFetchRecentWinBallsDataError();
 private:    
     NetworkManager* m_nwm;
-    DLT_WIN_BALL m_recent_win_balls[RECENT_NUMBER];
+
 };
 
 #endif // DLTWINBALLMANAGER_H
