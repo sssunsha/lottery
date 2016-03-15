@@ -1,5 +1,6 @@
 #ifndef CONSTANT_H
 #define CONSTANT_H
+#include "QDebug"
 
 enum EDLT_RED_BALL {
     E_R_1 = 1,E_R_2,E_R_3,E_R_4,E_R_5,E_R_6,E_R_7,E_R_8,E_R_9,E_R_10,
@@ -12,6 +13,14 @@ enum EDLT_BLUE_BALL {
     E_B_1 = 1,E_B_2,E_B_3,E_B_4,E_B_5,E_B_6,E_B_7,E_B_8,E_B_9,E_B_10,
     E_B_11,E_B_12
 };
+
+
+struct DLT_WIN_BALL{
+    enum EDLT_RED_BALL m_red[5];
+    enum EDLT_BLUE_BALL m_blue[2];
+};
+
+const int RECENT_NUMBER = 20;
 
 #endif // CONSTANT_H
 

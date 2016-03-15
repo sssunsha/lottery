@@ -6,10 +6,8 @@
 #include <QString>
 // DLT win ball manager
 
-const QString WINBALLFILEPATH = "./winball";
-const QString SUGGESTBALLFILEPATH = "./sugge";
-
-
+const QString WINBALLFILE = "./winball50";
+const QString SUGGESTBALLFILE = "./suggestball";
 
 #include <QObject>
 
@@ -25,6 +23,7 @@ public:
 
 private:
     NetworkManager* m_nwm;
+    DLT_WIN_BALL m_recent_win_balls[RECENT_NUMBER];
 };
 
 #endif // DLTWINBALLMANAGER_H

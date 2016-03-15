@@ -1,0 +1,2 @@
+now, I only can get the recent 50 groupe of win bar number, can not get all the history data free, so
+i plan to create two file(or)DB to store the data.

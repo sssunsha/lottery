@@ -1,6 +1,6 @@
 TEMPLATE = app
 
-QT += qml quick widgets
+QT += qml quick widgets network
 
 SOURCES += main.cpp \
     dltwinballmanager.cpp \
@@ -15,10 +15,10 @@ QML_IMPORT_PATH =
 include(deployment.pri)
 
 DISTFILES += \
-    UC.txt
+    UC.txt \
+    note.txt
 
 HEADERS += \
     constant.h \
     dltwinballmanager.h \
     networkmanager.h
-
