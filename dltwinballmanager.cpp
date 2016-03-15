@@ -4,6 +4,7 @@ DLTWINBallManager::DLTWINBallManager(QObject* parent)
     :QObject(parent)
 {
     this->m_nwm = new NetworkManager(this);
+    this->m_ldm = new LocalDataManager(this);
 }
 
 // init
@@ -27,6 +28,16 @@ void DLTWINBallManager::loadSuggestBallData()
 bool DLTWINBallManager::check4FetchWinBallDataFromWeb()
 {
 
+}
+
+NetworkManager *DLTWINBallManager::getNetWorkManager()
+{
+        return this->m_nwm;
+}
+
+LocalDataManager *DLTWINBallManager::getLocalDataManager()
+{
+    return this->m_ldm;
 }
 
 void DLTWINBallManager::handleFetchRecentWinBallsDataFinished()

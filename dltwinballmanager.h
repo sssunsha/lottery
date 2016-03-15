@@ -3,6 +3,7 @@
 
 #include "constant.h"
 #include "networkmanager.h"
+#include "localdatamanager.h"
 #include <QString>
 #include <QList>
 // DLT win ball manager
@@ -21,13 +22,17 @@ public:
     void loadLocalWinBallData();
     void loadSuggestBallData();
     bool check4FetchWinBallDataFromWeb();
-    QList<DLT_WIN_BALL>* m_recent_win_balls;
+    QList<DLT_WIN_BALL_DATA>* m_recent_win_balls;
+
+    NetworkManager* getNetWorkManager();
+    LocalDataManager* getLocalDataManager();
 
 public slots:
     void handleFetchRecentWinBallsDataFinished();
     void handleFetchRecentWinBallsDataError();
 private:    
     NetworkManager* m_nwm;
+    LocalDataManager* m_ldm;
 
 };
 

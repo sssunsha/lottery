@@ -4,7 +4,8 @@ QT += qml quick widgets network
 
 SOURCES += main.cpp \
     dltwinballmanager.cpp \
-    networkmanager.cpp
+    networkmanager.cpp \
+    localdatamanager.cpp
 
 RESOURCES += qml.qrc
 
@@ -21,4 +22,5 @@ DISTFILES += \
 HEADERS += \
     constant.h \
     dltwinballmanager.h \
-    networkmanager.h
+    networkmanager.h \
+    localdatamanager.h
