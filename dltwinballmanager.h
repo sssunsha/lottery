@@ -21,15 +21,23 @@ public:
     bool init();
     void loadLocalWinBallData();
     void loadSuggestBallData();
-    bool check4FetchWinBallDataFromWeb();
+    void fetchRecentWinBallDataFromWeb();
     QList<DLT_WIN_BALL_DATA>* m_recent_win_balls;
 
     NetworkManager* getNetWorkManager();
     LocalDataManager* getLocalDataManager();
 
 public slots:
+    // for network manager
     void handleFetchRecentWinBallsDataFinished();
     void handleFetchRecentWinBallsDataError();
+
+    // for localdatamanager
+    void handleLoadRecentWinBallDataFinished();
+    void handleLoadRecentWinBallDataFailed();
+    void handleLoadSuggestBallDataFinished();
+    void handleLoadSuggestBallDataFailed();
+
 private:    
     NetworkManager* m_nwm;
     LocalDataManager* m_ldm;

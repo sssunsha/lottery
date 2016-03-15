@@ -9,6 +9,17 @@ class LocalDataManager : public QObject
     Q_OBJECT
 public:
     LocalDataManager(QObject* parent = 0);
+
+    void loadRecentWinBallData();
+    void loadSuggestBallData();
+    void writeRecentWinBallData();
+    void writeSuggestBallData();
+
+signals:
+    void loadRecentWinBallDataFinished();
+    void loadRecentWinBallDataFailed();
+    void loadSuggestBallDataFinished();
+    void loadSuggestBallDataFailed();
 };
 
 #endif // LOCALDATAMANAGER_H

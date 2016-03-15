@@ -10,24 +10,26 @@ DLTWINBallManager::DLTWINBallManager(QObject* parent)
 // init
 bool DLTWINBallManager::init()
 {
-    // start to fectch the recent win ball from web
-    this->m_nwm->load_recent_balls();
+    loadLocalWinBallData();
+    loadSuggestBallData();
+    fetchRecentWinBallDataFromWeb();
     return true;
 }
 
 void DLTWINBallManager::loadLocalWinBallData()
 {
-
+    this->m_ldm->loadRecentWinBallData();
 }
 
 void DLTWINBallManager::loadSuggestBallData()
 {
-
+    this->m_ldm->loadSuggestBallData();
 }
 
-bool DLTWINBallManager::check4FetchWinBallDataFromWeb()
+void DLTWINBallManager::fetchRecentWinBallDataFromWeb()
 {
-
+    // start to fectch the recent win ball from web
+    this->m_nwm->load_recent_balls();
 }
 
 NetworkManager *DLTWINBallManager::getNetWorkManager()
@@ -48,5 +50,25 @@ void DLTWINBallManager::handleFetchRecentWinBallsDataFinished()
 void DLTWINBallManager::handleFetchRecentWinBallsDataError()
 {
     qDebug() << "fetch Recent Win ball falied";
+}
+
+void DLTWINBallManager::handleLoadRecentWinBallDataFinished()
+{
+
+}
+
+void DLTWINBallManager::handleLoadRecentWinBallDataFailed()
+{
+
+}
+
+void DLTWINBallManager::handleLoadSuggestBallDataFinished()
+{
+
+}
+
+void DLTWINBallManager::handleLoadSuggestBallDataFailed()
+{
+
 }
 
