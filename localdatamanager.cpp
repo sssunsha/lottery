@@ -2,6 +2,11 @@
 #include "dltwinballmanager.h"
 #include <QFile>
 #include <QDir>
+#include <QJsonParseError>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QByteArray>
 
 const QString WINBALLFILE = "/tmp/lottery/recentwinball";
 const QString SUGGESTBALLFILE = "/tmp/lottery/suggestball";
@@ -30,10 +35,15 @@ void LocalDataManager::loadRecentWinBallData()
     if(file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         QTextStream in(&file);
+        QString str = "";
         while (!in.atEnd()) {
             QString line = in.readLine();
-            qDebug() << line;
+            str.append(line);
         }
+
+        // load finished, start to store into memory
+        QString2RecentWinBallsData(str);
+
         file.close();
         emit(loadRecentWinBallDataFinished());
     }
@@ -51,20 +61,20 @@ void LocalDataManager::loadSuggestBallData()
 void LocalDataManager::writeRecentWinBallData(QList<DLT_WIN_BALL_DATA> *list)
 {
     // start to write the recent win data to the local file
-   QFile file(WINBALLFILE);
-   if(file.open(QIODevice::WriteOnly | QIODevice::Text))
-   {
-       QString str = recentWinBalllsData2QString(list);
-       qDebug() << "---> " << str;
+    QFile file(WINBALLFILE);
+    if(file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        QString str = recentWinBalllsData2QString(list);
+        //       qDebug() << "---> " << str;
         QTextStream out(&file);
         out << str;
-       file.close();
-       qDebug() << "write recent win balls data finished";
-   }
-   else
-   {
+        file.close();
+        qDebug() << "write recent win balls data finished";
+    }
+    else
+    {
         qDebug() << "write recent win balls data failed";
-   }
+    }
 
 }
 
@@ -81,7 +91,7 @@ void LocalDataManager::init()
 
 void LocalDataManager::checkLocalFolderExist()
 {
-       // check the /temp/lottery is exist or not, if not create
+    // check the /temp/lottery is exist or not, if not create
     QDir dir(LOCALFOLDER);
     if(!dir.exists())
     {
@@ -132,7 +142,7 @@ QString LocalDataManager::recentWinBalllsData2QString(QList<DLT_WIN_BALL_DATA> *
                 str.append(QString::number(x, 10));
 
                 if(m < 4)
-                str.append(",");
+                    str.append(",");
             }
             str.append("+");
             // append blue balls data
@@ -142,12 +152,12 @@ QString LocalDataManager::recentWinBalllsData2QString(QList<DLT_WIN_BALL_DATA> *
                 str.append(QString::number(x, 10));
 
                 if(n < 1)
-                str.append(",");
+                    str.append(",");
             }
             str.append("\"}");
 
             if(i < list->size()-1)
-            str.append(",");
+                str.append(",");
         }
 
         str.append("]}");
@@ -155,3 +165,81 @@ QString LocalDataManager::recentWinBalllsData2QString(QList<DLT_WIN_BALL_DATA> *
 
     return str;
 }
+
+void LocalDataManager::QString2RecentWinBallsData(QString data)
+{
+    // first to the parsing
+    QByteArray  byte = data.toUtf8();
+
+    QJsonParseError json_error;
+    QJsonDocument parse_doucment = QJsonDocument::fromJson(byte, &json_error);
+    if(json_error.error == QJsonParseError::NoError)
+    {
+        if(parse_doucment.isObject())
+        {
+            QJsonObject obj = parse_doucment.object();
+            if(obj.contains("data"))
+            {
+                QJsonValue data_value = obj.take("data");
+                if(data_value.isArray())
+                {
+                    QJsonArray data_array = data_value.toArray();
+                    QList<DLT_WIN_BALL_DATA>* balls = new QList<DLT_WIN_BALL_DATA>;
+                    for(int i = 0; i < data_array.size(); i++)
+                    {
+                        QJsonObject obj = data_array.at(i).toObject();
+                        //                        qDebug() << obj.take("expect").toString()
+                        //                        << " " << obj.take("opencode").toString()
+                        //                        << " "   << obj.take("opentime").toString()
+                        //                        << " " << obj.take("opentimestamp").toInt();
+
+                        DLT_WIN_BALL_DATA data;
+                        data.expect = obj.take(EXPECT).toString();
+                        data.date = obj.take(OPENTIME).toString();
+
+                        // parsing the opencode
+                        data.m_ball = parseWinBalls(obj.take(OPENCODE).toString());
+                        balls->append(data);
+                    }
+
+                    // save to memory
+                    ((DLTWINBallManager*)this->parent())->setRecentWinBallsData(balls);
+                }
+
+            }
+            else
+            {
+                emit(loadRecentWinBallDataFailed());
+            }
+        }
+        else
+        {
+            emit(loadRecentWinBallDataFailed());
+        }
+    }
+    else {
+        emit(loadRecentWinBallDataFailed());
+    }
+}
+
+DLT_WIN_BALL LocalDataManager::parseWinBalls(QString openCodeStr)
+{
+    // start to parse the opencode string to DLT_WIN_BALL_DATA data
+    DLT_WIN_BALL data;
+    QStringList red_blue_list = openCodeStr.split("+");
+    QStringList red_list = ((QString)red_blue_list.at(0)).split(",");
+    QStringList blue_list = ((QString)red_blue_list.at(1)).split(",");
+
+    bool ok;
+    for(int i = 0; i < red_list.size(); i++)
+    {
+        data.m_red[i] = (EDLT_RED_BALL)((QString)red_list[i]).toInt(&ok, 10);
+    }
+    for(int i = 0; i < blue_list.size(); i++)
+    {
+        data.m_blue[i] = (EDLT_BLUE_BALL)((QString)blue_list[i]).toInt(&ok, 10);
+    }
+    return data;
+}
+
+

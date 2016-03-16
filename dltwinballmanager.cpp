@@ -39,7 +39,7 @@ void DLTWINBallManager::fetchRecentWinBallDataFromWeb()
 // check if need to fetch new data online
 bool DLTWINBallManager::needFetchNewWinBallsData()
 {
-    return true;
+    return false;
 }
 
 
