@@ -1,5 +1,11 @@
 #include "dltwinballmanager.h"
 
+#include <QDebug>
+#include <QDate>
+#include <QTime>
+#include <QString>
+#include <QStringList>
+
 DLTWINBallManager::DLTWINBallManager(QObject* parent)
     :QObject(parent)
 {
@@ -39,7 +45,108 @@ void DLTWINBallManager::fetchRecentWinBallDataFromWeb()
 // check if need to fetch new data online
 bool DLTWINBallManager::needFetchNewWinBallsData()
 {
-    return false;
+    if(this->m_recent_win_balls && this->m_recent_win_balls->size() > 0)
+    {
+        // format for the target date and time
+
+        QString str = this->m_recent_win_balls->at(0).date;
+
+        QStringList strList = str.split(" ");
+        QStringList strDateList = ((QString)strList.at(0)).split("-");
+        QStringList strTimeList = ((QString)strList.at(1)).split(":");
+
+        bool ok;
+        int year = QString(strDateList.at(0)).toInt(&ok, 10);
+        int month = QString(strDateList.at(1)).toInt(&ok, 10);
+        int day = QString(strDateList.at(2)).toInt(&ok, 10);
+        QDate strDate =  QDate(year, month, day);
+
+        int hour = QString(strTimeList.at(0)).toInt(&ok, 10);
+        int minute = QString(strTimeList.at(1)).toInt(&ok, 10);
+        int second = QString(strTimeList.at(2)).toInt(&ok, 10);
+
+        QTime strTime = QTime(hour, minute, second);
+
+
+        // get the current date and time
+        QDate date;
+        date = date.currentDate();
+
+
+        QTime time;
+        time = time.currentTime();
+        QTime time21 = QTime(21, 0, 0);
+
+        // get the day of the current date
+        if(date > strDate)
+        {
+            int dayofyear_date = date.dayOfYear();
+            int dayofyear_strDate = strDate.dayOfYear();
+            int dayofweek_strDate = strDate.dayOfWeek();
+
+            if(dayofyear_date > dayofyear_strDate)
+            {
+                // same years
+                switch (dayofyear_date - dayofyear_strDate) {
+                case 1:
+                    // no need to sync
+                    return false;
+                    break;
+                case 2:
+                    // if target day is 1 or 6 and currentTime is over 21 go to sync
+                    if((dayofweek_strDate == 1 || dayofweek_strDate == 6) && time >= time21)
+                    {
+                        // go to sync
+                        return true;
+                    }
+                    else
+                    {
+                        // no need to sync
+                        return false;
+                    }
+                    break;
+                case 3:
+                    // if target day is 3 and currentTime is less than 21 no need to sync
+                    if(dayofweek_strDate == 3 && time < time21)
+                    {
+                        // no need to sync
+                        return false;
+                    }
+                    else
+                    {
+                        // go to sync
+                        return true;
+                    }
+                    break;
+                default:
+                    // go to sync
+                    return true;
+                    break;
+                }
+            }
+            else
+            {
+                // different years
+                if(dayofyear_date > 2)
+                {
+                    // go to sync
+                    return true;
+                }
+                else
+                {
+                    // no need to sync
+                    return false;
+                }
+            }
+        }
+
+        return false;
+
+    }
+    else
+    {
+        return true;
+    }
 }
 
 
@@ -104,7 +211,12 @@ void DLTWINBallManager::handleLoadRecentWinBallDataFinished()
     // check the timestamp for new round of data is generated now
     if(needFetchNewWinBallsData())
     {
+        qDebug() << "need to sync for the new win balls data";
         fetchRecentWinBallDataFromWeb();
+    }
+    else
+    {
+        qDebug() << "no need to sync for the new win balls data";
     }
 }
 
