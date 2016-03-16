@@ -20,6 +20,11 @@ signals:
     void loadRecentWinBallDataFailed();
     void loadSuggestBallDataFinished();
     void loadSuggestBallDataFailed();
+
+private:
+    void init();
+    void checkLocalFolderExist();
+    void checkLocalFileExist();
 };
 
 #endif // LOCALDATAMANAGER_H

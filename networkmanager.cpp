@@ -56,7 +56,7 @@ void NetworkManager::handleNetworkReply(QNetworkReply *reply)
     {
         QByteArray bytes = reply->readAll();
         //        QString data = QString::fromUtf8(bytes);
-        qDebug() << bytes;
+//        qDebug() << bytes;
         parse2RecentWinBallsData(bytes);
         emit(fetchRecentWinBallsDataFinished());
 
@@ -116,10 +116,10 @@ void NetworkManager::parse2RecentWinBallsData(QByteArray byte)
                     for(int i = 0; i < data_array.size(); i++)
                     {
                         QJsonObject obj = data_array.at(i).toObject();
-                        qDebug() << obj.take("expect").toString()
-                        << " " << obj.take("opencode").toString()
-                        << " "   << obj.take("opentime").toString()
-                        << " " << obj.take("opentimestamp").toInt();
+//                        qDebug() << obj.take("expect").toString()
+//                        << " " << obj.take("opencode").toString()
+//                        << " "   << obj.take("opentime").toString()
+//                        << " " << obj.take("opentimestamp").toInt();
                     }
                 }
                 else

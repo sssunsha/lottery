@@ -54,21 +54,21 @@ void DLTWINBallManager::handleFetchRecentWinBallsDataError()
 
 void DLTWINBallManager::handleLoadRecentWinBallDataFinished()
 {
-
+    qDebug() << "load recent win ball data finished";
 }
 
 void DLTWINBallManager::handleLoadRecentWinBallDataFailed()
 {
-
+    qDebug() << "load recent win ball data failed";
 }
 
 void DLTWINBallManager::handleLoadSuggestBallDataFinished()
 {
-
+    qDebug() << "load suggest ball data finished";
 }
 
 void DLTWINBallManager::handleLoadSuggestBallDataFailed()
 {
-
+    qDebug() << "load suggest ball data failed";
 }
 

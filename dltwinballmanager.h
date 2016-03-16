@@ -8,9 +8,6 @@
 #include <QList>
 // DLT win ball manager
 
-const QString WINBALLFILE = "./winball50";
-const QString SUGGESTBALLFILE = "./suggestball";
-
 #include <QObject>
 
 class DLTWINBallManager : public QObject
