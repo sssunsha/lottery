@@ -1,2 +1,8 @@
-now, I only can get the recent 50 groupe of win bar number, can not get all the history data free, so
+1.now, I only can get the recent 20 groupe of win bar number, can not get all the history data free, so
 i plan to create two file(or)DB to store the data.
+
+2. after lanuch the app,
+    1. load local rencent win balls data
+    2. check the online win balls has new version or not (with new round time stamp)
+    3. If yes --> fetch the online win balls --> update recent win ball -> write to local file
+    4. if no --> nothing to do
