@@ -16,7 +16,7 @@ public:
     NetworkManager(QObject* parent = 0);
     void load_recent_balls(/*DLT_WIN_BALL* balls*/);
 signals:
-    void fetchRecentWinBallsDataFinished();
+    void fetchRecentWinBallsDataFinished(QList<DLT_WIN_BALL_DATA>* balls);
     void fetchRecentWinBallsDataError();
 
 private slots:
@@ -30,6 +30,7 @@ void handleSSLErrors(QNetworkReply * reply, const QList<QSslError> & errors);
 
 private:
     void parse2RecentWinBallsData(QByteArray byte);
+    DLT_WIN_BALL parseWinBalls(QString openCodeStr);
 
     QNetworkAccessManager* m_net_access_manager;
     QUrl m_recent_win_balls_url;

@@ -35,8 +35,8 @@ NetworkManager::NetworkManager(QObject* parent)
                      this, SLOT(handleSSLErrors(QNetworkReply*, const QList<QSslError>&)));
 
     // init other signal and slots
-    connect(this, SIGNAL(fetchRecentWinBallsDataFinished()),
-            this->parent(), SLOT(handleFetchRecentWinBallsDataFinished()));
+    connect(this, SIGNAL(fetchRecentWinBallsDataFinished(QList<DLT_WIN_BALL_DATA>*)),
+            this->parent(), SLOT(handleFetchRecentWinBallsDataFinished(QList<DLT_WIN_BALL_DATA>*)));
     connect(this, SIGNAL(fetchRecentWinBallsDataError()),
             this->parent(), SLOT(handleFetchRecentWinBallsDataError()));
 
@@ -58,7 +58,6 @@ void NetworkManager::handleNetworkReply(QNetworkReply *reply)
         //        QString data = QString::fromUtf8(bytes);
 //        qDebug() << bytes;
         parse2RecentWinBallsData(bytes);
-        emit(fetchRecentWinBallsDataFinished());
 
     }
     else
@@ -113,6 +112,7 @@ void NetworkManager::parse2RecentWinBallsData(QByteArray byte)
                 if(data_value.isArray())
                 {
                     QJsonArray data_array = data_value.toArray();
+                    QList<DLT_WIN_BALL_DATA>* balls = new QList<DLT_WIN_BALL_DATA>;
                     for(int i = 0; i < data_array.size(); i++)
                     {
                         QJsonObject obj = data_array.at(i).toObject();
@@ -120,7 +120,16 @@ void NetworkManager::parse2RecentWinBallsData(QByteArray byte)
 //                        << " " << obj.take("opencode").toString()
 //                        << " "   << obj.take("opentime").toString()
 //                        << " " << obj.take("opentimestamp").toInt();
+
+                        DLT_WIN_BALL_DATA data;
+                        data.expect = obj.take("expect").toString();
+                        data.date = obj.take("opentime").toString();
+
+                        // parsing the opencode
+                        data.m_ball = parseWinBalls(obj.take("opencode").toString());
+                        balls->append(data);
                     }
+                    emit(fetchRecentWinBallsDataFinished(balls));
                 }
                 else
                 {
@@ -130,5 +139,25 @@ void NetworkManager::parse2RecentWinBallsData(QByteArray byte)
 
         }
     }
+}
+
+DLT_WIN_BALL NetworkManager::parseWinBalls(QString openCodeStr)
+{
+    // start to parse the opencode string to DLT_WIN_BALL_DATA data
+    DLT_WIN_BALL data;
+    QStringList red_blue_list = openCodeStr.split("+");
+    QStringList red_list = ((QString)red_blue_list.at(0)).split(",");
+    QStringList blue_list = ((QString)red_blue_list.at(1)).split(",");
+
+    bool ok;
+    for(int i = 0; i < red_list.size(); i++)
+    {
+        data.m_red[i] = (EDLT_RED_BALL)((QString)red_list[i]).toInt(&ok, 10);
+    }
+    for(int i = 0; i < blue_list.size(); i++)
+    {
+        data.m_blue[i] = (EDLT_BLUE_BALL)((QString)blue_list[i]).toInt(&ok, 10);
+    }
+    return data;
 }
 

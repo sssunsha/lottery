@@ -3,6 +3,7 @@
 DLTWINBallManager::DLTWINBallManager(QObject* parent)
     :QObject(parent)
 {
+    this->m_recent_win_balls = NULL;
     this->m_nwm = new NetworkManager(this);
     this->m_ldm = new LocalDataManager(this);
 }
@@ -32,6 +33,28 @@ void DLTWINBallManager::fetchRecentWinBallDataFromWeb()
     this->m_nwm->load_recent_balls();
 }
 
+void DLTWINBallManager::setRecentWinBallsData(QList<DLT_WIN_BALL_DATA> *list)
+{
+    if(list && list->size() > 0)
+    {
+        if(this->m_recent_win_balls)
+        {
+            delete this->m_recent_win_balls;
+        }
+        this->m_recent_win_balls = list;
+    }
+    else
+    {
+        delete list;
+        list = NULL;
+    }
+}
+
+QList<DLT_WIN_BALL_DATA> *DLTWINBallManager::getRecentWinBallsData()
+{
+    return this->m_recent_win_balls;
+}
+
 NetworkManager *DLTWINBallManager::getNetWorkManager()
 {
         return this->m_nwm;
@@ -42,8 +65,9 @@ LocalDataManager *DLTWINBallManager::getLocalDataManager()
     return this->m_ldm;
 }
 
-void DLTWINBallManager::handleFetchRecentWinBallsDataFinished()
+void DLTWINBallManager::handleFetchRecentWinBallsDataFinished(QList<DLT_WIN_BALL_DATA> *ball)
 {
+    setRecentWinBallsData(ball);
     qDebug() << "fetch Recent Win ball finished";
 }
 
