@@ -29,5 +29,9 @@ struct DLT_WIN_BALL_DATA{
 
 const int RECENT_NUMBER = 20;
 
+const QString EXPECT = "expect";
+const QString OPENCODE = "opencode";
+const QString OPENTIME = "opentime";
+
 #endif // CONSTANT_H
 

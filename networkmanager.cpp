@@ -122,11 +122,11 @@ void NetworkManager::parse2RecentWinBallsData(QByteArray byte)
 //                        << " " << obj.take("opentimestamp").toInt();
 
                         DLT_WIN_BALL_DATA data;
-                        data.expect = obj.take("expect").toString();
-                        data.date = obj.take("opentime").toString();
+                        data.expect = obj.take(EXPECT).toString();
+                        data.date = obj.take(OPENTIME).toString();
 
                         // parsing the opencode
-                        data.m_ball = parseWinBalls(obj.take("opencode").toString());
+                        data.m_ball = parseWinBalls(obj.take(OPENCODE).toString());
                         balls->append(data);
                     }
                     emit(fetchRecentWinBallsDataFinished(balls));

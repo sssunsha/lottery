@@ -3,6 +3,11 @@ i plan to create two file(or)DB to store the data.
 
 2. after lanuch the app,
     1. load local rencent win balls data
+
+       --> yes
     2. check the online win balls has new version or not (with new round time stamp)
     3. If yes --> fetch the online win balls --> update recent win ball -> write to local file
     4. if no --> nothing to do
+
+      --> no
+    5. fetch the online data and write to memory and also write to local file

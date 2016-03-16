@@ -2,6 +2,8 @@
 #define LOCALDATAMANAGER_H
 
 #include <QObject>
+#include <QString>
+
 #include "constant.h"
 
 class LocalDataManager : public QObject
@@ -12,7 +14,7 @@ public:
 
     void loadRecentWinBallData();
     void loadSuggestBallData();
-    void writeRecentWinBallData();
+    void writeRecentWinBallData(QList<DLT_WIN_BALL_DATA>* list);
     void writeSuggestBallData();
 
 signals:
@@ -25,6 +27,8 @@ private:
     void init();
     void checkLocalFolderExist();
     void checkLocalFileExist();
+    QString recentWinBalllsData2QString(QList<DLT_WIN_BALL_DATA>* list);
+
 };
 
 #endif // LOCALDATAMANAGER_H

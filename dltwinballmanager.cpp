@@ -11,9 +11,12 @@ DLTWINBallManager::DLTWINBallManager(QObject* parent)
 // init
 bool DLTWINBallManager::init()
 {
+    // first load local recent win data
     loadLocalWinBallData();
+
+    // second load suggest win data
     loadSuggestBallData();
-    fetchRecentWinBallDataFromWeb();
+
     return true;
 }
 
@@ -32,6 +35,13 @@ void DLTWINBallManager::fetchRecentWinBallDataFromWeb()
     // start to fectch the recent win ball from web
     this->m_nwm->load_recent_balls();
 }
+
+// check if need to fetch new data online
+bool DLTWINBallManager::needFetchNewWinBallsData()
+{
+    return true;
+}
+
 
 void DLTWINBallManager::setRecentWinBallsData(QList<DLT_WIN_BALL_DATA> *list)
 {
@@ -65,9 +75,16 @@ LocalDataManager *DLTWINBallManager::getLocalDataManager()
     return this->m_ldm;
 }
 
+//
+// fetch online recent win balls data slots
+//
+
 void DLTWINBallManager::handleFetchRecentWinBallsDataFinished(QList<DLT_WIN_BALL_DATA> *ball)
 {
     setRecentWinBallsData(ball);
+
+    // also write the data to local file
+    m_ldm->writeRecentWinBallData(this->m_recent_win_balls);
     qDebug() << "fetch Recent Win ball finished";
 }
 
@@ -76,15 +93,32 @@ void DLTWINBallManager::handleFetchRecentWinBallsDataError()
     qDebug() << "fetch Recent Win ball falied";
 }
 
+//
+// load local recent win balls data slots
+//
+
 void DLTWINBallManager::handleLoadRecentWinBallDataFinished()
 {
     qDebug() << "load recent win ball data finished";
+
+    // check the timestamp for new round of data is generated now
+    if(needFetchNewWinBallsData())
+    {
+        fetchRecentWinBallDataFromWeb();
+    }
 }
 
 void DLTWINBallManager::handleLoadRecentWinBallDataFailed()
 {
     qDebug() << "load recent win ball data failed";
+
+    // falied to load the local data
+    fetchRecentWinBallDataFromWeb();
 }
+
+//
+// load local suggest win balls data slots
+//
 
 void DLTWINBallManager::handleLoadSuggestBallDataFinished()
 {

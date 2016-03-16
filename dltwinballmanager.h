@@ -19,6 +19,7 @@ public:
     void loadLocalWinBallData();
     void loadSuggestBallData();
     void fetchRecentWinBallDataFromWeb();
+    bool needFetchNewWinBallsData();
 
     void setRecentWinBallsData(QList<DLT_WIN_BALL_DATA>* list);
     QList<DLT_WIN_BALL_DATA> *getRecentWinBallsData();
