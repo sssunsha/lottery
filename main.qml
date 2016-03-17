@@ -1,5 +1,7 @@
-import QtQuick 2.3
-import QtQuick.Controls 1.2
+import QtQuick 2.5
+import QtQuick.Controls 1.4
+import QtQml 2.2
+import DLTManager 1.0
 
 ApplicationWindow {
     id: root
@@ -16,6 +18,11 @@ ApplicationWindow {
         HistoryWinNumberView {
             anchors.fill: parent
         }
+    }
+
+    Connections {
+        target: DLTManager
+        onRecentWinBallsDataChanged : console.log("111");
     }
 }
 

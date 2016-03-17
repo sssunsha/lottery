@@ -13,8 +13,9 @@
 class DLTWINBallManager : public QObject
 {
     Q_OBJECT
+    Q_DISABLE_COPY(DLTWINBallManager)
 public:
-    DLTWINBallManager(QObject* parent = 0);
+    explicit DLTWINBallManager(QObject* parent = 0);
     bool init();
     void loadLocalWinBallData();
     void loadSuggestBallData();
@@ -22,10 +23,13 @@ public:
     bool needFetchNewWinBallsData();
 
     void setRecentWinBallsData(QList<DLT_WIN_BALL_DATA>* list);
-    QList<DLT_WIN_BALL_DATA> *getRecentWinBallsData();
+    Q_INVOKABLE QList<DLT_WIN_BALL_DATA> *getRecentWinBallsData();
 
     NetworkManager* getNetWorkManager();
     LocalDataManager* getLocalDataManager();
+
+signals:
+    void recentWinBallsDataChanged();
 
 public slots:
     // for network manager

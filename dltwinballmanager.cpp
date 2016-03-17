@@ -12,6 +12,8 @@ DLTWINBallManager::DLTWINBallManager(QObject* parent)
     this->m_recent_win_balls = NULL;
     this->m_nwm = new NetworkManager(this);
     this->m_ldm = new LocalDataManager(this);
+
+    init();
 }
 
 // init
@@ -154,11 +156,14 @@ void DLTWINBallManager::setRecentWinBallsData(QList<DLT_WIN_BALL_DATA> *list)
 {
     if(list && list->size() > 0)
     {
+        qDebug() << "set recent win balls data";
         if(this->m_recent_win_balls)
         {
             delete this->m_recent_win_balls;
         }
         this->m_recent_win_balls = list;
+
+        emit recentWinBallsDataChanged();
     }
     else
     {
