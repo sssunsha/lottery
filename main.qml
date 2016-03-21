@@ -22,7 +22,18 @@ ApplicationWindow {
 
     Connections {
         target: DLTManager
-        onRecentWinBallsDataChanged : console.log("111");
+        onRecentWinBallsDataChanged : {
+
+            console.log("recent win balls data changed");
+
+            // start to update the recent win balls data
+        }
+    }
+
+    Component.onCompleted: {
+        console.log("main.qml load completed");
+
+        // start to load the recent win balls data
     }
 }
 
