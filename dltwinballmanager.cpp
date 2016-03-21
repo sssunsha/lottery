@@ -222,6 +222,7 @@ void DLTWINBallManager::handleLoadRecentWinBallDataFinished()
     else
     {
         qDebug() << "no need to sync for the new win balls data";
+
     }
 }
 

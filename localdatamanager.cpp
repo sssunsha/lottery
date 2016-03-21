@@ -42,10 +42,10 @@ void LocalDataManager::loadRecentWinBallData()
         }
 
         // load finished, start to store into memory
-        QString2RecentWinBallsData(str);
+        if(QString2RecentWinBallsData(str))
+            emit(loadRecentWinBallDataFinished());
 
         file.close();
-        emit(loadRecentWinBallDataFinished());
     }
     else
     {
@@ -166,7 +166,7 @@ QString LocalDataManager::recentWinBalllsData2QString(QList<DLT_WIN_BALL_DATA> *
     return str;
 }
 
-void LocalDataManager::QString2RecentWinBallsData(QString data)
+bool LocalDataManager::QString2RecentWinBallsData(QString data)
 {
     // first to the parsing
     QByteArray  byte = data.toUtf8();
@@ -204,22 +204,27 @@ void LocalDataManager::QString2RecentWinBallsData(QString data)
 
                     // save to memory
                     ((DLTWINBallManager*)this->parent())->setRecentWinBallsData(balls);
+                    return true;
                 }
 
             }
             else
             {
                 emit(loadRecentWinBallDataFailed());
+                return false;
             }
         }
         else
         {
             emit(loadRecentWinBallDataFailed());
+            return false;
         }
     }
     else {
         emit(loadRecentWinBallDataFailed());
+        return false;
     }
+    return false;
 }
 
 DLT_WIN_BALL LocalDataManager::parseWinBalls(QString openCodeStr)

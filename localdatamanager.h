@@ -28,7 +28,7 @@ private:
     void checkLocalFolderExist();
     void checkLocalFileExist();
     QString recentWinBalllsData2QString(QList<DLT_WIN_BALL_DATA>* list);
-    void QString2RecentWinBallsData(QString data);
+    bool QString2RecentWinBallsData(QString data);
     DLT_WIN_BALL parseWinBalls(QString openCodeStr);
 
 };
