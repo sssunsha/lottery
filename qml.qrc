@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>HistoryWinNumberView.qml</file>
+        <file>RecentWinNumberView.qml</file>
     </qresource>
 </RCC>

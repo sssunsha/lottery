@@ -14,6 +14,9 @@ class DLTWINBallManager : public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY(DLTWINBallManager)
+    Q_PROPERTY(QString appName READ appName WRITE setAppName)
+
+
 public:
     explicit DLTWINBallManager(QObject* parent = 0);
     bool init();
@@ -25,8 +28,17 @@ public:
     void setRecentWinBallsData(QList<DLT_WIN_BALL_DATA>* list);
     Q_INVOKABLE QList<DLT_WIN_BALL_DATA> *getRecentWinBallsData();
 
+    Q_INVOKABLE QString getRecentWinBallsData4ExceptAt(int index);
+    Q_INVOKABLE QString getRecentWinBallsData4DateAt(int index);
+    Q_INVOKABLE QString getRecentWinBallsData4RedBallsAt(int index);
+    Q_INVOKABLE QString getRecentWinBallsData4BlueBallsAt(int index);
+    Q_INVOKABLE int getRecentWinBallsDataCount();
+
     NetworkManager* getNetWorkManager();
     LocalDataManager* getLocalDataManager();
+
+    QString appName();
+    void setAppName(QString n);
 
 signals:
     void recentWinBallsDataChanged();
@@ -46,7 +58,7 @@ private:
     QList<DLT_WIN_BALL_DATA>* m_recent_win_balls;
     NetworkManager* m_nwm;
     LocalDataManager* m_ldm;
-
+    QString m_appName;
 };
 
 #endif // DLTWINBALLMANAGER_H

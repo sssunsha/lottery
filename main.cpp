@@ -26,10 +26,7 @@ int main(int argc, char *argv[])
     qmlRegisterSingletonType<DLTWINBallManager>("DLTManager", 1, 0, "DLTManager", provider);
 
     QQmlApplicationEngine engine;
-    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
-
-
-//    if(!wbm->init()) return -1;
+    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));    
 
     return app.exec();
 }

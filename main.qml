@@ -15,9 +15,15 @@ ApplicationWindow {
         id : mainView
         anchors.fill: parent
 
-        HistoryWinNumberView {
+//        HistoryWinNumberView {
+//            anchors.fill: parent
+//        }
+
+        RecentWinNumberView {
             anchors.fill: parent
         }
+
+
     }
 
     Connections {

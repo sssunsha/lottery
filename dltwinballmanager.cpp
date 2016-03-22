@@ -19,6 +19,9 @@ DLTWINBallManager::DLTWINBallManager(QObject* parent)
 // init
 bool DLTWINBallManager::init()
 {
+    // set app name;
+    this->m_appName = "Supper Lottery Helper";
+
     // first load local recent win data
     loadLocalWinBallData();
 
@@ -177,6 +180,86 @@ QList<DLT_WIN_BALL_DATA> *DLTWINBallManager::getRecentWinBallsData()
     return this->m_recent_win_balls;
 }
 
+QString DLTWINBallManager::getRecentWinBallsData4ExceptAt(int i)
+{
+    if(this->m_recent_win_balls && this->m_recent_win_balls->length() > i && i >= 0)
+    {
+        return this->m_recent_win_balls->at(i).expect;
+    }
+    else
+    {
+        return "";
+    }
+}
+
+QString DLTWINBallManager::getRecentWinBallsData4DateAt(int index)
+{
+    if(this->m_recent_win_balls && this->m_recent_win_balls->length() > index && index >= 0)
+    {
+        return this->m_recent_win_balls->at(index).date;
+    }
+    else
+    {
+        return "";
+    }
+}
+
+QString DLTWINBallManager::getRecentWinBallsData4RedBallsAt(int index)
+{
+    if(this->m_recent_win_balls && this->m_recent_win_balls->length() > index && index >= 0)
+    {
+        QString str;
+        DLT_WIN_BALL_DATA data = m_recent_win_balls->at(index);
+        str.append(QString::number(data.m_ball.m_red[0], 10));
+        str.append(" , ");
+        str.append(QString::number(data.m_ball.m_red[1], 10));
+        str.append(" , ");
+        str.append(QString::number(data.m_ball.m_red[2], 10));
+        str.append(" , ");
+        str.append(QString::number(data.m_ball.m_red[3], 10));
+        str.append(" , ");
+        str.append(QString::number(data.m_ball.m_red[4], 10));
+
+        return str;
+
+    }
+    else
+    {
+        return "";
+    }
+
+}
+
+QString DLTWINBallManager::getRecentWinBallsData4BlueBallsAt(int index)
+{
+    if(this->m_recent_win_balls && this->m_recent_win_balls->length() > index && index >= 0)
+    {
+        QString str;
+        DLT_WIN_BALL_DATA data = m_recent_win_balls->at(index);
+        str.append(QString::number(data.m_ball.m_blue[0], 10));
+        str.append(" , ");
+        str.append(QString::number(data.m_ball.m_blue[1], 10));
+        return str;
+    }
+    else
+    {
+        return "";
+    }
+
+}
+
+int DLTWINBallManager::getRecentWinBallsDataCount()
+{
+    if(this->m_recent_win_balls && this->m_recent_win_balls->length() > 0)
+    {
+        return this->m_recent_win_balls->length();
+    }
+    else
+    {
+        return 0;
+    }
+}
+
 NetworkManager *DLTWINBallManager::getNetWorkManager()
 {
         return this->m_nwm;
@@ -186,6 +269,17 @@ LocalDataManager *DLTWINBallManager::getLocalDataManager()
 {
     return this->m_ldm;
 }
+
+QString DLTWINBallManager::appName()
+{
+    return this->m_appName;
+}
+
+void DLTWINBallManager::setAppName(QString n)
+{
+    this->m_appName = n;
+}
+
 
 //
 // fetch online recent win balls data slots
