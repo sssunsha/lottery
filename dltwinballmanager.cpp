@@ -263,12 +263,19 @@ int DLTWINBallManager::getRecentWinBallsDataCount()
 QString DLTWINBallManager::getRecentWinBallsData4RedBallAt(int index, int index2)
 {
     if(this->m_recent_win_balls && this->m_recent_win_balls->length() > index && index >= 0
-            && index2 >= 0 && index2 <= 4)
+            && index2 >= 0 && index2 <= 34)
     {
-        QString str;
         DLT_WIN_BALL_DATA data = m_recent_win_balls->at(index);
-        str.append(QString::number(data.m_ball.m_red[index2], 10));
-        return str;
+        for(int i = 0; i < 5; i++)
+        {
+            if(data.m_ball.m_red[i] == index2+1)
+            {
+                return QString::number(data.m_ball.m_red[i], 10);
+            }
+        }
+
+        return "";
+
     }
     else
     {
@@ -279,12 +286,17 @@ QString DLTWINBallManager::getRecentWinBallsData4RedBallAt(int index, int index2
 QString DLTWINBallManager::getRecentWinBallsData4BlueBalsAt(int index, int index2)
 {
     if(this->m_recent_win_balls && this->m_recent_win_balls->length() > index && index >= 0
-            && index2 >= 0 && index2 <= 1)
+            && index2 >= 0 && index2 <= 11)
     {
-        QString str;
         DLT_WIN_BALL_DATA data = m_recent_win_balls->at(index);
-        str.append(QString::number(data.m_ball.m_blue[index2], 10));
-        return str;
+        for(int i = 0; i < 2; i++)
+        {
+            if(data.m_ball.m_blue[i] == index2+1)
+            {
+                return QString::number(data.m_ball.m_blue[i], 10);
+            }
+        }
+        return "";
     }
     else
     {

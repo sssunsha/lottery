@@ -49,7 +49,9 @@ Rectangle{
               Text {
                   anchors.centerIn: parent
                   font.bold: true
-                  text : "1"
+                  text : (winball_panel.i) ?
+                             DLTManager.getRecentWinBallsData4BlueBalsAt( (winball_grid.m - index/47), index%47 -35) :
+                             DLTManager.getRecentWinBallsData4RedBallAt( (winball_grid.m - index/47), index%47)
                   color: (winball_panel.i ) ? "#262626" : "#A52A2A"
               }
           }
