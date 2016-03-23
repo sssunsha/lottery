@@ -260,6 +260,38 @@ int DLTWINBallManager::getRecentWinBallsDataCount()
     }
 }
 
+QString DLTWINBallManager::getRecentWinBallsData4RedBallAt(int index, int index2)
+{
+    if(this->m_recent_win_balls && this->m_recent_win_balls->length() > index && index >= 0
+            && index2 >= 0 && index2 <= 4)
+    {
+        QString str;
+        DLT_WIN_BALL_DATA data = m_recent_win_balls->at(index);
+        str.append(QString::number(data.m_ball.m_red[index2], 10));
+        return str;
+    }
+    else
+    {
+        return "";
+    }
+}
+
+QString DLTWINBallManager::getRecentWinBallsData4BlueBalsAt(int index, int index2)
+{
+    if(this->m_recent_win_balls && this->m_recent_win_balls->length() > index && index >= 0
+            && index2 >= 0 && index2 <= 1)
+    {
+        QString str;
+        DLT_WIN_BALL_DATA data = m_recent_win_balls->at(index);
+        str.append(QString::number(data.m_ball.m_blue[index2], 10));
+        return str;
+    }
+    else
+    {
+        return "";
+    }
+}
+
 NetworkManager *DLTWINBallManager::getNetWorkManager()
 {
         return this->m_nwm;

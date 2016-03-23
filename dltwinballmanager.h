@@ -34,6 +34,10 @@ public:
     Q_INVOKABLE QString getRecentWinBallsData4BlueBallsAt(int index);
     Q_INVOKABLE int getRecentWinBallsDataCount();
 
+    // index2 : the index of the one round of balls
+    Q_INVOKABLE QString getRecentWinBallsData4RedBallAt(int index, int index2);
+    Q_INVOKABLE QString getRecentWinBallsData4BlueBalsAt(int index, int index2);
+
     NetworkManager* getNetWorkManager();
     LocalDataManager* getLocalDataManager();
 
