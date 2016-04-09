@@ -21,7 +21,6 @@ static QObject *provider(QQmlEngine *engine, QJSEngine *scriptEngine)
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-
     global_app = &app;
     qmlRegisterSingletonType<DLTWINBallManager>("DLTManager", 1, 0, "DLTManager", provider);
 

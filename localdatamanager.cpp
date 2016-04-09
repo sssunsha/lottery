@@ -7,11 +7,21 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QByteArray>
+#include <QtGlobal>
 
+// try to check the OS
+#ifdef Q_OS_WIN32
+const QString WINBALLFILE = "F:\\qt_workspace\\lottery_tmp\\recentwinball";
+const QString SUGGESTBALLFILE = "F:\\qt_workspace\\lottery_tmp\\suggestball";
+const QString LOCALFOLDER = "F:\\qt_workspace\\lottery_tmp";
+#else
 const QString WINBALLFILE = "/tmp/lottery/recentwinball";
 const QString SUGGESTBALLFILE = "/tmp/lottery/suggestball";
-
 const QString LOCALFOLDER = "/tmp/lottery/";
+#endif
+
+
+
 
 LocalDataManager::LocalDataManager(QObject *parent)
     :QObject(parent)
